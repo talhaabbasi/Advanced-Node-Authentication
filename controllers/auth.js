@@ -10,10 +10,7 @@ exports.register = async (req, res, next) => {
       password,
     })
 
-    res.status(201).json({
-      success: true,
-      user,
-    })
+    sendToken(user, 201, res)
   } catch (error) {
     next(error)
   }
@@ -29,10 +26,7 @@ exports.login = async (req, res, next) => {
     if (!user) next(new ErrorResponse("Invalid credentials", 401))
     const match = await user.match(password)
     if (!match) next(new ErrorResponse("Invalid credentials", 401))
-    res.status(200).json({
-      success: true,
-      token: "323eqd2edq2",
-    })
+    sendToken(user, 200, res)
   } catch (error) {
     next(error)
   }
@@ -44,4 +38,9 @@ exports.forgetPassword = (req, res, next) => {
 
 exports.resetPassword = (req, res, next) => {
   res.send("Reset Password route")
+}
+
+const sendToken = (user, statusCode, res) => {
+  const token = user.getSignedToken()
+  res.status(statusCode).json({ success: true, token })
 }
