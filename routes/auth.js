@@ -14,6 +14,6 @@ router.route("/login").post(login)
 
 router.route("/forget-password").post(forgetPassword)
 
-router.route("/reset-password:resetToken").post(resetPassword)
+router.route("/reset-password/:resetToken").post(resetPassword)
 
 module.exports = router
